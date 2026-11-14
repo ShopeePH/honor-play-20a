@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peejay Link Generator</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;background:#f5f5f5}
+h1{text-align:center;color:#ee4d2d}
+.card{background:#fff;padding:20px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.1);margin-bottom:15px}
+label{font-weight:bold;display:block;margin-top:15px}
+input,textarea{width:100%;padding:12px;margin-top:5px;border:1px solid #ddd;border-radius:8px;font-size:15px;box-sizing:border-box}
+button{width:100%;padding:14px;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:12px}
+.btn-gen{background:#ee4d2d;color:#fff}
+.btn-copy{background:#222;color:#fff}
+small{color:#888}
+#output{white-space:pre-wrap;background:#111;color:#0f0;padding:15px;border-radius:8px;font-size:12px;overflow:auto;max-height:300px}
+.link-box{background:#fff3e0;padding:12px;border-radius:8px;margin-top:10px;word-break:break-all}
+</style>
+</head>
+<body>
+<h1>🔗 PEEJAY LINK GENERATOR</h1>
+<p style="text-align:center">Fill-up ka lang, ako na bahala sa code!</p>
+
+<div class="card">
+<label>1. Pangalan ng Product (para sa file name)</label>
+<input id="filename" placeholder="hal: honor-play-20a">
+<small>Walang space, gamitin mo - lang. Ex: xiaomi-redmi-15</small>
+
+<label>2. Title na makikita sa Facebook</label>
+<input id="title" placeholder="hal: HONOR Play 20A - P8,217 ONLY!">
+
+<label>3. Description / Promo</label>
+<input id="desc" placeholder="hal: P45/day lang! 0% Interest! 11.11 Sale!">
+
+<label>4. Imgur Image Link</label>
+<input id="img" placeholder="https://i.imgur.com/xxxxxx.jpg">
+<small>Galing sa imgur.com > New Post > Copy Image Address</small>
+
+<label>5. Shopee Affiliate Link</label>
+<input id="shopee" placeholder="https://s.shopee.ph/xxxx">
+<small>Galing sa Shopee > Share > Copy Link</small>
+
+<button class="btn-gen" onclick="generate()">✨ GENERATE CODE</button>
+</div>
+
+<div class="card" id="result" style="display:none">
+<h3>✅ Tapos na! Copy mo na to:</h3>
+<div id="output"></div>
+<button class="btn-copy" onclick="copyCode()">📋 COPY CODE</button>
+<div class="link-box">
+<b>Yung magiging link mo pag ni-post mo sa FB:</b><br>
+<span id="finalLink"></span><br><br>
+<b>Caption na pwede mo i-copy:</b><br>
+<span id="caption"></span>
+</div>
+<button class="btn-copy" onclick="copyCaption()">📋 COPY CAPTION</button>
+</div>
+
+<script>
+let generated = "";
+function generate(){
+  let f = document.getElementById('filename').value.trim().replace(/\s+/g,'-').toLowerCase();
+  let t = document.getElementById('title').value.trim();
+  let d = document.getElementById('desc').value.trim();
+  let img = document.getElementById('img').value.trim();
+  let shop = document.getElementById('shopee').value.trim();
+  if(!f || !t || !shop){ alert('Paki-fill up yung Filename, Title, at Shopee Link!'); return; }
+  if(!img) img = 'https://i.imgur.com/placeholder.jpg';
+  generated = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>${t}</title>
+<meta property="og:title" content="${t}">
+<meta property="og:description" content="${d}">
+<meta property="og:type" content="website">
+<meta property="og:image" content="${img}">
+<meta http-equiv="refresh" content="0; url=${shop}">
+<script>window.location.href="${shop}";<\/script>
+</head>
+<body>Loading...</body>
+</html>`;
+  document.getElementById('output').textContent = generated;
+  document.getElementById('finalLink').textContent = 'https://peejay112004.github.io/honor-play-20a/' + f + '.html';
+  document.getElementById('caption').textContent = t + '\n' + d + '\n\nCheck mo dito 👇\nhttps://peejay112004.github.io/honor-play-20a/' + f + '.html';
+  document.getElementById('result').style.display = 'block';
+  window.scrollTo(0, document.body.scrollHeight);
+}
+function copyCode(){ navigator.clipboard.writeText(generated); alert('Na-copy na yung CODE! Paste mo na sa GitHub!'); }
+function copyCaption(){ navigator.clipboard.writeText(document.getElementById('caption').textContent); alert('Na-copy na yung CAPTION! Paste mo na sa Facebook!'); }
+</script>
+</body>
+</html>
